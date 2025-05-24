@@ -6,6 +6,7 @@ import "./index.css";
 import { settingSchema } from "./libs/settings";
 import { logseq as pluginInfo } from "../package.json";
 import { englishSettingSchema } from "./libs/settings_en";
+import { PageIdentity } from "@logseq/libs/dist/LSPlugin.user";
 
 const pluginId = pluginInfo.id;
 
@@ -52,7 +53,7 @@ async function main() {
     const updatedAt = currentPage?.updatedAt as number | undefined;
     const createdAt = currentPage?.createdAt as number | undefined;
 
-    if (!updatedAt || !createdAt) return;
+    if (!currentPage || !updatedAt || !createdAt) return;
 
     // 将时间戳转换为用户首选的日期格式
     const { preferredDateFormat } = await logseq.App.getUserConfigs();
@@ -66,6 +67,7 @@ async function main() {
 
     // 2. 如果是普通页面，则更新页面的 updated 属性和 created 属性
     await handleDate(
+      currentPage.uuid,
       formattedUpdatedAt,
       formattedCreatedAt,
       updateTimePropertyName,
@@ -74,12 +76,13 @@ async function main() {
   });
 
   async function handleDate(
+    pageIdentity: PageIdentity,
     updatedAt: string,
     createdAt: string,
     updateTimePropertyName: string,
     createTimePropertyName: string
   ) {
-    const currentBlocksTree = await logseq.Editor.getCurrentPageBlocksTree();
+    const currentBlocksTree = await logseq.Editor.getPageBlocksTree(pageIdentity);
 
     if (!currentBlocksTree) return;
 
