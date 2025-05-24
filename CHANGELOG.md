@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/mlhiter/logseq-update-property-mini/compare/v1.0.0...v1.0.1) (2025-05-24)
+
+
+### Bug Fixes
+
+* use page uuid to replace getCurrentPageBlockTree, this avoid problems when switching logseq pages ([83cf96b](https://github.com/mlhiter/logseq-update-property-mini/commit/83cf96bf510b96b76211f29e2cd163842fdfc650))
+
 # 1.0.0 (2025-03-13)
 
 
